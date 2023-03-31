@@ -1,7 +1,6 @@
 # kgpt
 
-`kgpt` is a tiny utility that can integrate GPT into your development process. It's only tested on Python, but it should work with other languages too.
-
+`kgpt` is a tiny utility that can integrate AI assistance into your development process.
 Install it with:
 ```
 pip install git+https://github.com/kvfrans/kgpt.git
@@ -30,7 +29,7 @@ Note: Replace `README.md` with the name of your file if it's different. Also, ma
 
 ### Generate code snippets from natural descriptions
 
-`kgpt code {}` or `kgpt c {}` creates python code that solves your task. For example,
+`kgpt code {description}` or `kgpt c {}` creates python code that solves your task. For example,
 ```
 > kgpt c using numpy create a 5x5 checkerboard of 1 and 0
 
@@ -58,9 +57,9 @@ Running the code results in:
 
 ### Automatically debug small errors
 
-`kgpt fix {}` or `kgpt f {}` can automatically debug small errors. Pass in a python command as the argument. For example,
+`kgpt fix {command to run program}` or `kgpt f {}` can automatically debug small errors. Pass in a python command as the argument. For example,
 
-Give a file errortest.py with contents:
+Given a file errortest.py with contents:
 ```
 def test():
     x = 3
