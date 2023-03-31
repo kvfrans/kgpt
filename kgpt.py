@@ -41,6 +41,12 @@ def kgpt_script(args):
 
 def error():
     print(colored('Please enter a command and an argument.', 'red'))
+    print('kgpt code {decription} will generate Python code that accomplishes the specified objective.')
+    print('    Example: kgpt code "using numpy create a 5x5 checkerboard of 1 and 0"')
+    print('kgpt bash {decription} will generate terminal commands that accomplishes the specified objective.')
+    print('    Example: kgpt bash "create a file named test.txt"')
+    print('kgpt fix {run command} will run a program and automatically fix small errors.')
+    print('    Example: kgpt fix "python test.py"')
 
 def code(args):
     # Concat args into a string.
