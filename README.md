@@ -1,6 +1,7 @@
 # kgpt
 
-`kgpt` is a tiny utility that can integrate AI assistance into your development process.
+`kgpt` is a tiny utility that can integrate AI assistance into your development process. It can help generate terminal commands, code snippets, or automatically fix small errors. I built this tool for myself, but you can use it!
+
 Install it with:
 ```
 pip install git+https://github.com/kvfrans/kgpt.git
