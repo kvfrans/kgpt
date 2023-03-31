@@ -4,7 +4,7 @@
 
 Install it with:
 ```
-pip install git+https://github.com/kvfrans/kgpt.git
+pip install kgpt
 ```
 
 ### Generate terminal commands from natural descriptions
