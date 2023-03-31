@@ -130,20 +130,32 @@ def bash(args):
 
 def fix(args):
     args = ' '.join(args)
+    if len(args) > 2:
+        # execute the bash code in 'args', log the result.
+        import subprocess
+        import json
 
-    # execute the bash code in 'args', log the result.
-    import subprocess
-    import json
-
-    result = subprocess.run(args, shell=True, capture_output=True)
-    if result.stderr:
-        error = result.stderr.decode('utf-8')
-    if result.stdout:
-        print(colored("Your code has no errors!", "green"))
-        return
-    
-    print("Error:\n" + colored(error, "red"))
-
+        result = subprocess.run(args, shell=True, capture_output=True)
+        if result.stderr:
+            error = result.stderr.decode('utf-8')
+        if result.stdout:
+            print(colored("Your code has no errors!", "green"))
+            return
+        print("Error:\n" + colored(error, "red"))
+    else:
+        print(colored("Please enter error", "yellow"))
+        contents = []
+        while True:
+            try:
+                line = input()
+                if line == "":
+                    break
+            except EOFError:
+                break
+            contents.append(line)
+        error = '\n'.join(contents)
+        print("OK")
+        
     prompt = [
         {"role": "system", "content": "You are a programming assistant. You will be given an error message. Please identify the file that is causing the error, and print the location of that file. Begin your response with [LOCATION], followed by a space, followed by the location of the file. On the next line, print [LINE NUMBER] followed by a space, followed by the line number of the error."},
         {"role": "user", "content": "Erorr:\n{}".format(error)},
@@ -157,16 +169,22 @@ def fix(args):
     )
     resp_content = response["choices"][0]['message']['content']
     print(colored(resp_content, 'yellow'))
+    resp_content_list = [x for x in resp_content.split('\n') if len(x) > 2]
     
-    error_file = resp_content.split('\n')[0].split('[LOCATION] ')[1]
-    error_line_number = int(resp_content.split('\n')[1].split('[LINE NUMBER] ')[1]) - 1
+    
+    error_file = resp_content_list[0].split('[LOCATION] ')[1].strip()
+    error_line_number = int(resp_content_list[1].split('[LINE NUMBER] ')[1].strip()) - 1
 
 
-    file_content = open(error_file, 'r').read()
+    file_content = open(error_file, 'r').read().split('\n')
+    surrounding_context = ""
+    for i in range(max(error_line_number-100, 0), min(error_line_number+30, len(file_content)-1)):
+        surrounding_context += "[{}] {}\n".format(i+1, file_content[i])
+    print(surrounding_context)
 
     prompt = [
         {"role": "system", "content": "You are a programming assistant. You will be given the contents of a file, along with an error message. Print a fixed version of the line of code causing the error. Begin your response with [FIX], followed by a space, followed by the fixed line of code. Do not describe your code. Do not print the original line. Only print the fixed line of code."},
-        {"role": "user", "content": "File:\n===={}\n====\n\nError:\n===={}\n====".format(file_content, error)},
+        {"role": "user", "content": "File:\n===={}\n====\n\nError:\n===={}\n====".format(surrounding_context, error)},
     ]
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -178,7 +196,7 @@ def fix(args):
     resp_content = response["choices"][0]['message']['content']
     proposed_fix = resp_content.split('[FIX] ')[1]
 
-    original_line = file_content.split('\n')[error_line_number]
+    original_line = file_content[error_line_number]
     original_whitespace = original_line.split(original_line.strip())[0]
     print(colored("=======", 'yellow'))
     print(colored("[ORIGINAL] {}".format(original_line.strip()), 'yellow'))
