@@ -67,11 +67,11 @@ def code(args):
         command = splits[1]
         post = splits[2]
 
-        if pre[-1] == '\n':
+        if len(pre) > 0 and pre[-1] == '\n':
             pre = pre[:-1]
         if command[:7] == 'python\n':
             command = command[7:]
-        if post[0] == '\n':
+        if len(post) > 0 and post[0] == '\n':
             post = post[1:]
 
         print(colored(pre, 'green'))
@@ -140,7 +140,7 @@ def fix(args):
     print("Error:\n" + colored(error, "red"))
 
     prompt = [
-        {"role": "system", "content": "You are a programming assistant. You will be given a Python error message. Please identify the file that is causing the error, and print the location of that file. Begin your response with [LOCATION], followed by a space, followed by the location of the file. On the next line, print [LINE NUMBER] followed by a space, followed by the line number of the error."},
+        {"role": "system", "content": "You are a programming assistant. You will be given an error message. Please identify the file that is causing the error, and print the location of that file. Begin your response with [LOCATION], followed by a space, followed by the location of the file. On the next line, print [LINE NUMBER] followed by a space, followed by the line number of the error."},
         {"role": "user", "content": "Erorr:\n{}".format(error)},
     ]
     response = openai.ChatCompletion.create(

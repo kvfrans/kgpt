@@ -1,8 +1,14 @@
 # kgpt
 
-`kgpt` is a tiny utility that can integrate GPT into your development process.
+`kgpt` is a tiny utility that can integrate GPT into your development process. It's only tested on Python, but it should work with other languages too.
 
-`kgpt bash {}` or `kgpt b {}` creates a terminal command to solve your task. For example,
+Install it with:
+```
+pip install git+https://github.com/kvfrans/kgpt.git
+```
+
+### Generate terminal commands from natural descriptions
+`kgpt bash {description}` or `kgpt b {...}` creates a terminal command to solve your task. For example,
 ```
 > kgpt b add readme to git, commit and push
 
@@ -21,6 +27,8 @@ Note: Replace `README.md` with the name of your file if it's different. Also, ma
 > Execute command? (y/n): y
 (The above commands then run)
 ```
+
+### Generate code snippets from natural descriptions
 
 `kgpt code {}` or `kgpt c {}` creates python code that solves your task. For example,
 ```
@@ -47,6 +55,8 @@ Running the code results in:
  [1 0 1 0 1]]
 
 ```
+
+### Automatically debug small errors
 
 `kgpt fix {}` or `kgpt f {}` can automatically debug small errors. Pass in a python command as the argument. For example,
 
