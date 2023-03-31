@@ -9,10 +9,9 @@ import inspect
 def kgpt_script(args):
     # read openai key from openai_key.txt
     script_dir = os.path.dirname(__file__)
-    # print(script_dir)
-    file_path = os.path.join(script_dir, 'openai_key.txt')
+    file_path = os.path.join(script_dir, 'kgpt_openai_key.txt')
 
-    if not os.path.exists(file_path) or os.path.getsize(file_path) == 0:
+    if (len(args) >= 1 and args[0] == 'key') or not os.path.exists(file_path) or os.path.getsize(file_path) == 0:
         # prompt user to paste key and create file.
         val = input(colored('Please paste in your OpenAI API Key', 'red'))
         with open(file_path, 'w') as f:
@@ -41,12 +40,12 @@ def kgpt_script(args):
 
 def error():
     print(colored('Please enter a command and an argument.', 'red'))
-    print('kgpt code {decription} will generate Python code that accomplishes the specified objective.')
-    print('    Example: kgpt code "using numpy create a 5x5 checkerboard of 1 and 0"')
-    print('kgpt bash {decription} will generate terminal commands that accomplishes the specified objective.')
-    print('    Example: kgpt bash "create a file named test.txt"')
-    print('kgpt fix {run command} will run a program and automatically fix small errors.')
-    print('    Example: kgpt fix "python test.py"')
+    print(colored('kgpt code {decription}', 'green') + ' will generate Python code that accomplishes the specified objective.')
+    print('    Example: '+colored('kgpt code "using numpy create a 5x5 checkerboard of 1 and 0"', 'yellow'))
+    print(colored('kgpt bash {decription}', 'green') + ' will generate terminal commands that accomplishes the specified objective.')
+    print('    Example: '+colored('kgpt bash "create a file named test.txt"', 'yellow'))
+    print(colored('kgpt fix {run command} ', 'green') + ' will run a program and automatically fix small errors.')
+    print('    Example: '+colored('kgpt fix "python test.py"', 'yellow'))
 
 def code(args):
     # Concat args into a string.

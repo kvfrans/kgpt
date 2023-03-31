@@ -86,3 +86,6 @@ You could then run
 (The file would then be edited with the fixed line of code inserted.)
 
 ```
+
+### Add API Key
+To re-add your OpenAI API key, run `kgpt key`
